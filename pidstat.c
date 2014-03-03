@@ -27,6 +27,8 @@
 #include <dirent.h>
 #include <ctype.h>
 #include <sys/types.h>
+#include <sys/stat.h>
+#include <time.h>
 #include <pwd.h>
 #include <sys/utsname.h>
 #include <regex.h>
@@ -320,6 +322,10 @@ int read_proc_pid_stat(unsigned int pid, struct pid_stats *pst,
 	if ((fp = fopen(filename, "r")) == NULL)
 		/* No such process */
 		return 1;
+
+	struct stat bd;
+	stat(filename, &bd);
+	memcpy(pst->birthdate,ctime(&bd.st_ctime),24);
 
 	sprintf(format, "%%*d (%%%ds %%*s %%*d %%*d %%*d %%*d %%*d %%*u %%lu %%lu"
 		" %%lu %%lu %%lu %%lu %%lu %%lu %%*d %%*d %%u %%*u %%*d %%lu %%lu"
@@ -663,6 +669,10 @@ int read_proc_pid_fd(unsigned int pid, struct pid_stats *pst,
 int read_pid_stats(unsigned int pid, struct pid_stats *pst,
 		   unsigned int *thread_nr, unsigned int tgid)
 {
+	
+
+	
+
 	if (read_proc_pid_stat(pid, pst, thread_nr, tgid))
 		return 1;
 
@@ -1264,7 +1274,8 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		if (get_pid_to_display(prev, curr, p, actflag, P_TASK,
 				       &pstc, &pstp) <= 0)
 			continue;
-
+		printf("%s ",pstc->birthdate);
+		
 		printf("%11ld", (long) time(NULL));
 		__print_line_id(pstc, '0');
 
@@ -1376,6 +1387,7 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 		printf("  Command\n");
 	}
 
+		printf("%s ",pstc->birthdate);
 	for (p = 0; p < pid_nr; p++) {
 
 		if (get_pid_to_display(prev, curr, p, actflag, P_CHILD,

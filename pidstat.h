@@ -106,6 +106,7 @@
 						} while (0)
 
 struct pid_stats {
+	char birthdate[24];
 	unsigned long long read_bytes			__attribute__ ((aligned (8)));
 	unsigned long long write_bytes			__attribute__ ((packed));
 	unsigned long long cancelled_write_bytes	__attribute__ ((packed));
