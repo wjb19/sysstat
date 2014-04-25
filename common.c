@@ -344,8 +344,9 @@ int print_gal_header(struct tm *rectime, char *sysname, char *release,
 		strftime(cur_date, sizeof(cur_date), "%x", rectime);
 	}
 
-	printf("%s %s (%s) \t%s \t_%s_\t(%d CPU)\n", sysname, release, nodename,
-	       cur_date, machine, cpu_nr);
+	//printf("%s %s (%s) \t%s \t_%s_\t(%d CPU)\n", sysname, release, nodename,
+	//      cur_date, machine, cpu_nr);
+	printf("%s\n", nodename);
 
 	return rc;
 }
