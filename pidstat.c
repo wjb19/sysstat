@@ -271,6 +271,13 @@ void print_comm(struct pid_stats *pst)
 		p = pst->comm;
 	}
 
+    	char *pr = p, *pw = p;
+    	while (*pr) {
+        	*pw = *pr++;
+        	 pw += (*pw != '\n');
+    	}
+    	*pw = '\0';
+
 	printf("  %s%s\n", pst->tgid ? "|__" : "", p);
 }
 
